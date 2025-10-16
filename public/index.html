@@ -22,7 +22,7 @@
       const file = document.getElementById('htmlFile').files[0];
       const text = await file.text();
 
-      const response = await fetch('/api/upload-', {
+      const response = await fetch('/api/uplode-', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ html: text })
