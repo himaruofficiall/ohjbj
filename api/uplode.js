@@ -6,19 +6,15 @@ export default async function handler(req, res) {
   }
 
   const { html } = req.body;
-
-  if (!html) {
-    return res.status(400).json({ error: "HTML content is missing" });
-  }
-
-  // 🔍 Cek apakah token ada di server
   const token = process.env.VERCEL_TOKEN;
+
   if (!token) {
-    console.error("❌ VERCEL_TOKEN tidak ditemukan di environment!");
-    return res.status(500).json({ error: "Token tidak ditemukan di server." });
+    return res.status(500).json({ error: "Token tidak ditemukan di server" });
+  }
+  if (!html) {
+    return res.status(400).json({ error: "HTML kosong" });
   }
 
-  // ✅ Payload untuk API Vercel
   const payload = {
     name: "html-uplode",
     files: [
@@ -28,7 +24,7 @@ export default async function handler(req, res) {
       },
     ],
     projectSettings: {
-      framework: "other",
+      framework: "vite",
       devCommand: null,
       installCommand: null,
       buildCommand: null,
@@ -37,14 +33,17 @@ export default async function handler(req, res) {
   };
 
   try {
-    const response = await fetch("https://api.vercel.com/v13/deployments", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+    const response = await fetch(
+      "https://api.vercel.com/v13/deployments?skipAutoDetectionConfirmation=1",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    );
 
     const data = await response.json();
 
