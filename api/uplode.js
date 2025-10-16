@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
   // ✅ Tambahkan projectSettings agar valid di API terbaru
   const payload = {
-    name: "html-upload",
+    name: "html-uplode",
     files: [
       {
         file: "index.html",
